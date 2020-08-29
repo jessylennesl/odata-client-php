@@ -18,7 +18,7 @@ namespace SaintSystems\OData;
 // use Closure;
 // use Exception;
 use ArrayAccess;
-use Carbon\CarbonInterface;
+use Bizzission\Support\Carbon\CarbonInterface;
 // use LogicException;
 // use JsonSerializable;
 use DateTimeInterface;
@@ -1066,7 +1066,7 @@ class Entity implements ArrayAccess, Arrayable
      * Return a timestamp as DateTime object with time set to 00:00:00.
      *
      * @param  mixed  $value
-     * @return \Illuminate\Support\Carbon
+     * @return \Bizzission\Support\Carbon
      */
     protected function asDate($value)
     {
@@ -1077,7 +1077,7 @@ class Entity implements ArrayAccess, Arrayable
      * Return a timestamp as DateTime object.
      *
      * @param  mixed  $value
-     * @return \Illuminate\Support\Carbon
+     * @return \Bizzission\Support\Carbon
      */
     protected function asDateTime($value)
     {
@@ -1106,7 +1106,7 @@ class Entity implements ArrayAccess, Arrayable
         // Carbon instances from that format. Again, this provides for simple date
         // fields on the database, while still supporting Carbonized conversion.
         if ($this->isStandardDateFormat($value)) {
-            return Date::instance(Carbon::createFromFormat('Y-m-d', $value)->startOfDay());
+            return Date::instance(Bizzission\Support\Carbon\Carbon::createFromFormat('Y-m-d', $value)->startOfDay());
         }
         $format = $this->getDateFormat();
         // https://bugs.php.net/bug.php?id=75577
