@@ -22,7 +22,7 @@ use Bizzission\Support\Carbon\CarbonInterface;
 // use LogicException;
 // use JsonSerializable;
 use DateTimeInterface;
-use Bizzission\Contracts\Support\Arrayable;
+use Bizzission\Support\Contracts\Arrayable;
 use Bizzission\Support\Arr;
 use Bizzission\Support\Str;
 use Bizzission\Support\Facades\Date;
@@ -1106,7 +1106,7 @@ class Entity implements ArrayAccess, Arrayable
         // Carbon instances from that format. Again, this provides for simple date
         // fields on the database, while still supporting Carbonized conversion.
         if ($this->isStandardDateFormat($value)) {
-            return Date::instance(Bizzission\Support\Carbon\Carbon::createFromFormat('Y-m-d', $value)->startOfDay());
+            return Date::instance(\Bizzission\Support\Carbon\Carbon::createFromFormat('Y-m-d', $value)->startOfDay());
         }
         $format = $this->getDateFormat();
         // https://bugs.php.net/bug.php?id=75577
