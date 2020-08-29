@@ -3,8 +3,8 @@
 namespace SaintSystems\OData\Query;
 
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+use Bizzission\Support\Arr;
+use Bizzission\Support\Collection;
 use SaintSystems\OData\Constants;
 use SaintSystems\OData\Exception\ODataQueryException;
 use SaintSystems\OData\IODataClient;

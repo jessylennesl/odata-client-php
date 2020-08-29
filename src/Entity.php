@@ -22,10 +22,10 @@ use Bizzission\Support\Carbon\CarbonInterface;
 // use LogicException;
 // use JsonSerializable;
 use DateTimeInterface;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Date;
+use Bizzission\Contracts\Support\Arrayable;
+use Bizzission\Support\Arr;
+use Bizzission\Support\Str;
+use Bizzission\Support\Facades\Date;
 use SaintSystems\OData\Exception\MassAssignmentException;
 
 /**
