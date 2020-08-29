@@ -36,11 +36,11 @@ class Builder
      *
      * @var array
      */
-    public $bindings = [
-        'select' => [],
-        'where'  => [],
-        'order'  => [],
-    ];
+    public $bindings = array(
+        'select' => array(),
+        'where'  => array(),
+        'order'  => array(),
+    );
 
     /**
      * The entity set which the query is targeting.
@@ -126,19 +126,19 @@ class Builder
      *
      * @var array
      */
-    public $operators = [
+    public $operators = array(
         '=', '<', '>', '<=', '>=', '<>', '!=',
         'like', 'like binary', 'not like', 'between', 'ilike',
         '&', '|', '^', '<<', '>>',
         'rlike', 'regexp', 'not regexp',
         '~', '~*', '!~', '!~*', 'similar to',
         'not similar to', 'not ilike', '~~*', '!~~*',
-    ];
+    );
 
     /**
      * @var array
      */
-    public $select = [];
+    public $select = array();
 
     /**
      * @var array
@@ -179,7 +179,7 @@ class Builder
      *
      * @return $this
      */
-    public function select($properties = [])
+    public function select($properties = array())
     {
         $this->properties = is_array($properties) ? $properties : func_get_args();
 
@@ -236,7 +236,7 @@ class Builder
      * @param array $properties
      * @return $this
      */
-    public function expand($properties = [])
+    public function expand($properties = array())
     {
         $this->expands = is_array($properties) ? $properties : func_get_args();
 
@@ -306,7 +306,7 @@ class Builder
      *
      * @return $this
      */
-    public function order($properties = [])
+    public function order($properties = array())
     {
         $order = is_array($properties) && count(func_get_args()) === 1 ? $properties : func_get_args();
 
@@ -328,7 +328,7 @@ class Builder
      */
     public function orderBySQL($sql = '')
     {
-        $this->orders = array(['sql' => $sql]);
+        $this->orders = array(array('sql' => $sql));
 
         return $this;
     }
@@ -340,18 +340,18 @@ class Builder
      *
      * @return array
      */
-    private function buildOrders($orders = [])
+    private function buildOrders($orders = array())
     {
-        $_orders = [];
+        $_orders = array();
 
         foreach ($orders as &$order) {
             $column = isset($order['column']) ? $order['column'] : $order[0];
             $direction = isset($order['direction']) ? $order['direction'] : (isset($order[1]) ? $order[1] : 'asc');
 
-            array_push($_orders, [
+            array_push($_orders, array(
                 'column' => $column,
                 'direction' => $direction
-            ]);
+            ));
         }
 
         return $_orders;
@@ -396,7 +396,9 @@ class Builder
         // passed to the method, we will assume that the operator is an equals sign
         // and keep going. Otherwise, we'll require the operator to be passed in.
         list($value, $operator) = $this->prepareValueAndOperator(
-            $value, $operator, func_num_args() == 2
+            $value,
+            $operator,
+            func_num_args() == 2
         );
 
         // If the columns is actually a Closure instance, we will assume the developer
@@ -410,7 +412,7 @@ class Builder
         // assume that the developer is just short-cutting the '=' operators and
         // we will set the operators to '=' and set the values appropriately.
         if ($this->invalidOperator($operator)) {
-            list($value, $operator) = [$operator, '='];
+            list($value, $operator) = array($operator, '=');
         }
 
         // If the value is a Closure, it means the developer is performing an entire
@@ -438,16 +440,20 @@ class Builder
         // in our array and add the query binding to our array of bindings that
         // will be bound to each SQL statements when it is finally executed.
         $type = 'Basic';
-        if($this->isOperatorAFunction($operator)){
+        if ($this->isOperatorAFunction($operator)) {
             $type = 'Function';
         }
-        
+
 
         $this->wheres[] = compact(
-            'type', 'column', 'operator', 'value', 'boolean'
+            'type',
+            'column',
+            'operator',
+            'value',
+            'boolean'
         );
 
-        if (! $value instanceof Expression) {
+        if (!$value instanceof Expression) {
             $this->addBinding($value, 'where');
         }
 
@@ -468,7 +474,7 @@ class Builder
         return $this->whereNested(function ($query) use ($column, $method) {
             foreach ($column as $key => $value) {
                 if (is_numeric($key) && is_array($value)) {
-                    $query->{$method}(...array_values($value));
+                    call_user_func_array(array($query, $method), array_values($value));
                 } else {
                     $query->$method($key, '=', $value);
                 }
@@ -501,12 +507,12 @@ class Builder
     protected function prepareValueAndOperator($value, $operator, $useDefault = false)
     {
         if ($useDefault) {
-            return [$operator, '='];
+            return array($operator, '=');
         } elseif ($this->invalidOperatorAndValue($operator, $value)) {
             throw new \InvalidArgumentException('Illegal operator and value combination.');
         }
 
-        return [$value, $operator];
+        return array($value, $operator);
     }
 
     /**
@@ -522,7 +528,7 @@ class Builder
     protected function invalidOperatorAndValue($operator, $value)
     {
         return is_null($value) && in_array($operator, $this->operators) &&
-             ! in_array($operator, ['=', '<>', '!=']);
+            !in_array($operator, array('=', '<>', '!='));
     }
 
     /**
@@ -533,8 +539,8 @@ class Builder
      */
     protected function invalidOperator($operator)
     {
-        return ! in_array(strtolower($operator), $this->operators, true) &&
-               ! in_array(strtolower($operator), $this->grammar->getOperatorsAndFunctions(), true);
+        return !in_array(strtolower($operator), $this->operators, true) &&
+            !in_array(strtolower($operator), $this->grammar->getOperatorsAndFunctions(), true);
     }
 
     /**
@@ -617,7 +623,11 @@ class Builder
         call_user_func($callback, $query = $this->newQuery());
 
         $this->wheres[] = compact(
-            'type', 'column', 'operator', 'query', 'boolean'
+            'type',
+            'column',
+            'operator',
+            'query',
+            'boolean'
         );
 
         $this->addBinding($query->getBindings(), 'where');
@@ -696,7 +706,7 @@ class Builder
      *
      * @throws ODataQueryException
      */
-    public function find($id, $properties = [])
+    public function find($id, $properties = array())
     {
         if (!isset($this->entitySet)) {
             throw new ODataQueryException(Constants::ENTITY_SET_REQUIRED);
@@ -713,7 +723,7 @@ class Builder
      */
     public function value($property)
     {
-        $result = (array) $this->first([$property]);
+        $result = (array) $this->first(array($property));
 
         return count($result) > 0 ? reset($result) : null;
     }
@@ -725,7 +735,7 @@ class Builder
      *
      * @return \stdClass|array|null
      */
-    public function first($properties = [])
+    public function first($properties = array())
     {
         return $this->take(1)->get($properties)->first();
         //return $this->take(1)->get($properties);
@@ -765,11 +775,11 @@ class Builder
      *
      * @return Collection
      */
-    public function get($properties = [], $options = null)
+    public function get($properties = array(), $options = null)
     {
         if (is_numeric($properties)) {
             $options = $properties;
-            $properties = [];
+            $properties = array();
         }
 
         if (isset($options)) {
@@ -803,11 +813,11 @@ class Builder
      *
      * @return Collection
      */
-    public function post($body = [], $properties = [], $options = null)
+    public function post($body = array(), $properties = array(), $options = null)
     {
         if (is_numeric($properties)) {
             $options = $properties;
-            $properties = [];
+            $properties = array();
         }
 
         if (isset($options)) {
@@ -851,11 +861,11 @@ class Builder
      *
      * @return Collection
      */
-    public function patch($body, $properties = [], $options = null)
+    public function patch($body, $properties = array(), $options = null)
     {
         if (is_numeric($properties)) {
             $options = $properties;
-            $properties = [];
+            $properties = array();
         }
 
         if (isset($options)) {
@@ -888,7 +898,8 @@ class Builder
     protected function runGet()
     {
         return $this->client->get(
-            $this->grammar->compileSelect($this), $this->getBindings()
+            $this->grammar->compileSelect($this),
+            $this->getBindings()
         );
     }
 
@@ -900,7 +911,8 @@ class Builder
     protected function runPatch($body)
     {
         return $this->client->patch(
-            $this->grammar->compileSelect($this), $body
+            $this->grammar->compileSelect($this),
+            $body
         );
     }
 
@@ -912,7 +924,8 @@ class Builder
     protected function runPost($body)
     {
         return $this->client->post(
-            $this->grammar->compileSelect($this), $body
+            $this->grammar->compileSelect($this),
+            $body
         );
     }
 
@@ -938,7 +951,7 @@ class Builder
         $this->count = true;
         $results = $this->get();
 
-        if (! $results->isEmpty()) {
+        if (!$results->isEmpty()) {
             // replace all none numeric characters before casting it as int
             return (int) preg_replace('/[^0-9,.]/', '', $results[0]);
         }
@@ -960,8 +973,8 @@ class Builder
             return true;
         }
 
-        if (! is_array(reset($values))) {
-            $values = [$values];
+        if (!is_array(reset($values))) {
+            $values = array($values);
         }
 
         // Here, we will sort the insert keys for every record so that each insert is
@@ -1028,7 +1041,7 @@ class Builder
     protected function cleanBindings(array $bindings)
     {
         return array_values(array_filter($bindings, function ($binding) {
-            return true;//! $binding instanceof Expression;
+            return true; //! $binding instanceof Expression;
         }));
     }
 
@@ -1044,7 +1057,7 @@ class Builder
      */
     public function addBinding($value, $type = 'where')
     {
-        if (! array_key_exists($type, $this->bindings)) {
+        if (!array_key_exists($type, $this->bindings)) {
             throw new \InvalidArgumentException("Invalid binding type: {$type}.");
         }
 

@@ -7,17 +7,17 @@ use GuzzleHttp\Client;
 class GuzzleHttpProvider implements IHttpProvider
 {
     /**
-    * The Guzzle client used to make the HTTP request
-    *
-    * @var Client
-    */
+     * The Guzzle client used to make the HTTP request
+     *
+     * @var Client
+     */
     protected $http;
 
     /**
-    * The timeout, in seconds
-    *
-    * @var string
-    */
+     * The timeout, in seconds
+     *
+     * @var string
+     */
     protected $timeout;
 
     protected $extra_options;
@@ -60,23 +60,22 @@ class GuzzleHttpProvider implements IHttpProvider
     }
 
     /**
-    * Executes the HTTP request using Guzzle
-    *
-    * @param HttpRequestMessage $request
-    *
-    * @return mixed object or array of objects
-    *         of class $returnType
-    */
+     * Executes the HTTP request using Guzzle
+     *
+     * @param HttpRequestMessage $request
+     *
+     * @return mixed object or array of objects
+     *         of class $returnType
+     */
     public function send(HttpRequestMessage $request)
     {
-        $options = [
+        $options = array(
             'headers' => $request->headers,
             'stream' =>  $request->returnsStream,
             'timeout' => $this->timeout
-        ];
+        );
 
-        foreach ($this->extra_options as $key => $value)
-        {
+        foreach ($this->extra_options as $key => $value) {
             $options[$key] = $value;
         }
 

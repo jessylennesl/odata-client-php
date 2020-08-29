@@ -20,7 +20,7 @@
         "php": "^5.3",
         "guzzlehttp/guzzle": "^3.8",
         "nesbot/carbon": "^1.23",
-        "illuminate/support": "^5.8 || ^6.0 || ^7.0"
+        "bizzission/support": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "*"

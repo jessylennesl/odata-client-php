@@ -59,7 +59,7 @@ class ODataClient implements IODataClient
      */
     public function __construct(
         $baseUrl,
-        Callable $authenticationProvider = null,
+        callable $authenticationProvider = null,
         IHttpProvider $httpProvider = null
     ) {
         $this->setBaseUrl($baseUrl);
@@ -179,7 +179,7 @@ class ODataClient implements IODataClient
      *
      * @return Builder
      */
-    public function select($properties = [])
+    public function select($properties = array())
     {
         $properties = is_array($properties) ? $properties : func_get_args();
 
@@ -194,7 +194,9 @@ class ODataClient implements IODataClient
     public function query()
     {
         return new Builder(
-            $this, $this->getQueryGrammar(), $this->getPostProcessor()
+            $this,
+            $this->getQueryGrammar(),
+            $this->getPostProcessor()
         );
     }
 
@@ -206,7 +208,7 @@ class ODataClient implements IODataClient
      *
      * @return IODataRequest
      */
-    public function get($requestUri, $bindings = [])
+    public function get($requestUri, $bindings = array())
     {
         return $this->request(HttpMethod::GET, $requestUri);
     }
@@ -262,7 +264,7 @@ class ODataClient implements IODataClient
      */
     public function request($method, $requestUri, $body = null)
     {
-        $request = new ODataRequest($method, $this->baseUrl.$requestUri, $this, $this->entityReturnType);
+        $request = new ODataRequest($method, $this->baseUrl . $requestUri, $this, $this->entityReturnType);
 
         if ($body) {
             $request->attachBody($body);

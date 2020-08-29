@@ -204,8 +204,7 @@ class ODataRequest implements IODataRequest
      */
     public function execute()
     {
-        if (empty($this->requestUrl))
-        {
+        if (empty($this->requestUrl)) {
             throw new ODataException(Constants::REQUEST_URL_MISSING);
         }
 
@@ -240,7 +239,7 @@ class ODataRequest implements IODataRequest
         // If no return type is specified, return DynamicsResponse
         $returnObj = $response;
 
-        $returnType = is_null($this->returnType) ? Entity::class : $this->returnType;
+        $returnType = is_null($this->returnType) ? Entity::$__CLASS__ : $this->returnType;
 
         if ($returnType) {
             $returnObj = $response->getResponseAsObject($returnType);
@@ -265,11 +264,11 @@ class ODataRequest implements IODataRequest
         $promise = $client->requestAsync(
             $this->requestType,
             $this->getRequestUrl(),
-            [
+            array(
                 'body' => $this->requestBody,
                 'stream' => $this->returnsStream,
                 'timeout' => $this->timeout
-            ]
+            )
         )->then(
             // On success, return the result/response
             function ($result) {
@@ -303,7 +302,7 @@ class ODataRequest implements IODataRequest
      */
     private function getDefaultHeaders()
     {
-        $headers = [
+        $headers = array(
             //RequestHeader::HOST => $this->client->getBaseUrl(),
             RequestHeader::CONTENT_TYPE => ContentType::APPLICATION_JSON,
             RequestHeader::ODATA_MAX_VERSION => Constants::MAX_ODATA_VERSION,
@@ -311,12 +310,12 @@ class ODataRequest implements IODataRequest
             RequestHeader::PREFER => Constants::ODATA_MAX_PAGE_SIZE_DEFAULT,
             RequestHeader::USER_AGENT => 'odata-sdk-php-' . Constants::SDK_VERSION,
             //RequestHeader::AUTHORIZATION => 'Bearer ' . $this->accessToken
-        ];
+        );
 
         if (!$this->isAggregate()) {
-            $headers[] = [
+            $headers[] = array(
                 RequestHeader::ACCEPT => ContentType::APPLICATION_JSON,
-            ];
+            );
         }
         return $headers;
     }
@@ -362,7 +361,7 @@ class ODataRequest implements IODataRequest
     private function authenticateRequest(HttpRequestMessage $request)
     {
         $authenticationProvider = $this->client->getAuthenticationProvider();
-        if ( ! is_null($authenticationProvider) && is_callable($authenticationProvider)) {
+        if (!is_null($authenticationProvider) && is_callable($authenticationProvider)) {
             return $authenticationProvider($request);
         }
     }
@@ -375,7 +374,8 @@ class ODataRequest implements IODataRequest
      *
      * @return array flattened object
      */
-    protected function flattenDictionary($obj) {
+    protected function flattenDictionary($obj)
+    {
         foreach ($obj as $arrayKey => $arrayValue) {
             if (method_exists($arrayValue, 'getProperties')) {
                 $data = $arrayValue->getProperties();

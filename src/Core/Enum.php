@@ -1,18 +1,20 @@
 <?php
+
 /**
-* Copyright (c) Saint Systems, LLC.  All Rights Reserved.  
-* Licensed under the MIT License.  See License in the project root 
-* for license information.
-* 
-* Enum File
-* PHP version 7
-*
-* @category  Library
-* @package   SaintSystems.OData
-* @copyright 2017 Saint Systems, LLC
-* @license   https://opensource.org/licenses/MIT MIT License
-* @version   GIT: 0.1.0
-*/
+ * Copyright (c) Saint Systems, LLC.  All Rights Reserved.  
+ * Licensed under the MIT License.  See License in the project root 
+ * for license information.
+ * 
+ * Enum File
+ * PHP version 7
+ *
+ * @category  Library
+ * @package   SaintSystems.OData
+ * @copyright 2017 Saint Systems, LLC
+ * @license   https://opensource.org/licenses/MIT MIT License
+ * @version   GIT: 0.1.0
+ */
+
 namespace SaintSystems\OData\Core;
 
 use SaintSystems\OData\Exception\ApplicationException;
@@ -26,12 +28,12 @@ use SaintSystems\OData\Exception\ApplicationException;
  */
 abstract class Enum
 {
-    private static $constants = [];
+    private static $constants = array();
     /**
-    * The value of the enum
-    *
-    * @var string
-    */
+     * The value of the enum
+     *
+     * @var string
+     */
     private $_value;
 
     /**
@@ -61,12 +63,12 @@ abstract class Enum
     }
 
     /**
-    * Check if the enum is defined
-    *
-    * @param string $value the value of the enum
-    *
-    * @return bool True if the value is defined
-    */
+     * Check if the enum is defined
+     *
+     * @param string $value the value of the enum
+     *
+     * @return bool True if the value is defined
+     */
     public function is($value)
     {
         return $this->_value === $value;
@@ -81,8 +83,7 @@ abstract class Enum
     {
         $class = get_called_class();
 
-        if (!(array_key_exists($class, self::$constants)))
-        {
+        if (!(array_key_exists($class, self::$constants))) {
             $reflectionObj = new \ReflectionClass($class);
             self::$constants[$class] = $reflectionObj->getConstants();
         }
@@ -90,10 +91,10 @@ abstract class Enum
     }
 
     /**
-    * Get the value of the enum
-    *
-    * @return string value of the enum
-    */
+     * Get the value of the enum
+     *
+     * @return string value of the enum
+     */
     public function value()
     {
         return $this->_value;
