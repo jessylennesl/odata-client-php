@@ -194,7 +194,7 @@ class Entity implements ArrayAccess, Arrayable
      *
      * @return Entity
      */
-    function construct($properties = array())
+    function __construct($properties = array())
     {
         $this->bootIfNotBooted();
 
@@ -202,7 +202,8 @@ class Entity implements ArrayAccess, Arrayable
 
         $this->fill($properties);
 
-        return $this;
+        // Can't return something from __construct()
+        // return $this;
     }
 
     /**

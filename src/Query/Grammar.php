@@ -594,7 +594,7 @@ class Grammar implements IGrammar
      * @param string $value
      * @return mixed
      */
-    private function appendQueryParam(string $value)
+    private function appendQueryParam($value)
     {
         //$param = $this->isFirstQueryParam ? $value : '&' . $value;
         //$this->isFirstQueryParam = false;

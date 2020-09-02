@@ -213,7 +213,9 @@ class ODataRequest implements IODataRequest
 
         $this->authenticateRequest($request);
 
-        $result = $this->client->getHttpProvider()->send($request);
+        $req = $this->client->getHttpProvider()->send($request);
+
+        $result = $req->getResponse();
 
         //Send back the bare response
         if ($this->returnsStream) {
@@ -228,10 +230,16 @@ class ODataRequest implements IODataRequest
         try {
             $response = new ODataResponse(
                 $this,
-                $result->getBody()->getContents(),
+                $result->getBody(),
                 $result->getStatusCode(),
                 $result->getHeaders()
             );
+//            $response = new ODataResponse(
+//                $this,
+//                $result->getBody()->getContents(),
+//                $result->getStatusCode(),
+//                $result->getHeaders()
+//            );
         } catch (\Exception $e) {
             throw new ODataException(Constants::UNABLE_TO_PARSE_RESPONSE);
         }

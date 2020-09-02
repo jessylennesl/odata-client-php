@@ -2,7 +2,7 @@
 
 namespace SaintSystems\OData;
 
-use GuzzleHttp\Client;
+use Guzzle\Http\Client;
 
 class GuzzleHttpProvider implements IHttpProvider
 {
@@ -83,11 +83,12 @@ class GuzzleHttpProvider implements IHttpProvider
             $options['body'] = $request->body;
         }
 
-        $result = $this->http->request(
+        $result = $this->http->createRequest(
             $request->method,
             $request->requestUri,
             $options
         );
+        $result->send();
 
         return $result;
     }
