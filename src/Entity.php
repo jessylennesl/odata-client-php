@@ -269,7 +269,7 @@ class Entity implements ArrayAccess, Arrayable
      *
      * @throws MassAssignmentException
      */
-    public function fill(array $properties)
+    public function fill($properties)
     {
         $totallyGuarded = $this->totallyGuarded();
 
@@ -295,10 +295,11 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $properties
      * @return $this
      */
-    public function forceFill(array $properties)
+    public function forceFill($properties)
     {
-        return static::unguarded(function () use ($properties) {
-            return $this->fill($properties);
+        $that = $this;
+        return static::unguarded(function () use ($properties, $that) {
+            return $that->fill($properties);
         });
     }
 
@@ -308,7 +309,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $properties
      * @return array
      */
-    protected function fillableFromArray(array $properties)
+    protected function fillableFromArray($properties)
     {
         if (count($this->getFillable()) > 0 && !static::$unguarded) {
             return array_intersect_key($properties, array_flip($this->getFillable()));
@@ -436,7 +437,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $hidden
      * @return $this
      */
-    public function setHidden(array $hidden)
+    public function setHidden($hidden)
     {
         $this->hidden = $hidden;
 
@@ -506,7 +507,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $visible
      * @return $this
      */
-    public function setVisible(array $visible)
+    public function setVisible($visible)
     {
         $this->visible = $visible;
 
@@ -597,7 +598,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $fillable
      * @return $this
      */
-    public function fillable(array $fillable)
+    public function fillable($fillable)
     {
         $this->fillable = $fillable;
 
@@ -664,7 +665,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  callable  $callback
      * @return mixed
      */
-    public static function unguarded(callable $callback)
+    public static function unguarded($callback)
     {
         if (static::$unguarded) {
             return $callback();
@@ -745,7 +746,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  bool  $sync
      * @return $this
      */
-    public function setRawProperties(array $properties, $sync = false)
+    public function setRawProperties($properties, $sync = false)
     {
         $this->properties = $properties;
 
@@ -1318,7 +1319,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $properties
      * @return array
      */
-    protected function addDatePropertiesToArray(array $properties)
+    protected function addDatePropertiesToArray($properties)
     {
         foreach ($this->getDates() as $key) {
             if (!isset($properties[$key])) {
@@ -1340,7 +1341,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $mutatedProperties
      * @return array
      */
-    protected function addMutatedPropertiesToArray(array $properties, array $mutatedProperties)
+    protected function addMutatedPropertiesToArray($properties, $mutatedProperties)
     {
         foreach ($mutatedProperties as $key) {
             // We want to spin through all the mutated properties for this model and call
@@ -1369,7 +1370,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $mutatedProperties
      * @return array
      */
-    protected function addCastPropertiesToArray(array $properties, array $mutatedProperties)
+    protected function addCastPropertiesToArray($properties, $mutatedProperties)
     {
         foreach ($this->getCasts() as $key => $value) {
             if (!array_key_exists($key, $properties) || in_array($key, $mutatedProperties)) {
@@ -1484,7 +1485,7 @@ class Entity implements ArrayAccess, Arrayable
      * @param  array  $values
      * @return array
      */
-    protected function getArrayableItems(array $values)
+    protected function getArrayableItems($values)
     {
         if (count($this->getVisible()) > 0) {
             $values = array_intersect_key($values, array_flip($this->getVisible()));

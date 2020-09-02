@@ -70,7 +70,7 @@ class GuzzleHttpProvider implements IHttpProvider
     public function send(HttpRequestMessage $request)
     {
         $options = array(
-            'headers' => $request->headers,
+//            'headers' => $request->headers,
             'stream' =>  $request->returnsStream,
             'timeout' => $this->timeout
         );
@@ -79,16 +79,25 @@ class GuzzleHttpProvider implements IHttpProvider
             $options[$key] = $value;
         }
 
-        if ($request->method == HttpMethod::POST || $request->method == HttpMethod::PUT || $request->method == HttpMethod::PATCH) {
-            $options['body'] = $request->body;
-        }
+//        if ($request->method == HttpMethod::POST || $request->method == HttpMethod::PUT || $request->method == HttpMethod::PATCH) {
+//            $options['body'] = $request->body;
+//        }
 
         $result = $this->http->createRequest(
             $request->method,
             $request->requestUri,
+            $request->headers,
+            $request->body,
             $options
         );
         $result->send();
+
+//        $result = $this->http->createRequest(
+//            $request->method,
+//            $request->requestUri,
+//            $options
+//        );
+//        $result->send();
 
         return $result;
     }

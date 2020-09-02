@@ -265,6 +265,7 @@ class ODataRequest implements IODataRequest
      */
     public function executeAsync($client = null)
     {
+        $that = $this;
         if (is_null($client)) {
             $client = $this->createHttpClient();
         }
@@ -279,17 +280,17 @@ class ODataRequest implements IODataRequest
             )
         )->then(
             // On success, return the result/response
-            function ($result) {
+            function ($result) use ($that) {
                 $response = new ODataResponse(
-                    $this,
+                    $that,
                     $result->getBody()->getContents(),
                     $result->getStatusCode(),
                     $result->getHeaders()
                 );
                 $returnObject = $response;
-                if ($this->returnType) {
+                if ($that->returnType) {
                     $returnObject = $response->getResponseAsObject(
-                        $this->returnType
+                        $that->returnType
                     );
                 }
                 return $returnObject;
