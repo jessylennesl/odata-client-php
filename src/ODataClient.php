@@ -281,7 +281,20 @@ class ODataClient implements IODataClient
         }
          */
 
-        return $request->execute();
+        $response = $request->execute();
+        $this->lastSkipToken = $request->getLatsSkipToken();
+        // var_dump($response);
+        return $response;
+    }
+
+    /**
+     * 
+     */
+    private $lastSkipToken = null;
+
+    public function getLatsSkipToken()
+    {
+        return $this->lastSkipToken;
     }
 
     /**

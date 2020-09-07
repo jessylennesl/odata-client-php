@@ -246,6 +246,7 @@ class ODataRequest implements IODataRequest
 
         // If no return type is specified, return DynamicsResponse
         $returnObj = $response;
+        $this->lastSkipToken = $response->getSkipToken();
 
         $returnType = is_null($this->returnType) ? Entity::$__CLASS__ : $this->returnType;
 
@@ -253,6 +254,16 @@ class ODataRequest implements IODataRequest
             $returnObj = $response->getResponseAsObject($returnType);
         }
         return $returnObj;
+    }
+
+    /**
+     * 
+     */
+    private $lastSkipToken = null;
+
+    public function getLatsSkipToken()
+    {
+        return $this->lastSkipToken;
     }
 
     /**
