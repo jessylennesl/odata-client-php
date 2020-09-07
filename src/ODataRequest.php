@@ -316,7 +316,7 @@ class ODataRequest implements IODataRequest
             RequestHeader::CONTENT_TYPE => ContentType::APPLICATION_JSON,
             RequestHeader::ODATA_MAX_VERSION => Constants::MAX_ODATA_VERSION,
             RequestHeader::ODATA_VERSION => Constants::ODATA_VERSION,
-            RequestHeader::PREFER => Constants::ODATA_MAX_PAGE_SIZE . '=' . Constants::ODATA_MAX_PAGE_SIZE_DEFAULT,
+            // RequestHeader::PREFER => Constants::ODATA_MAX_PAGE_SIZE . '=' . Constants::ODATA_MAX_PAGE_SIZE_DEFAULT,
             RequestHeader::USER_AGENT => 'odata-sdk-php-' . Constants::SDK_VERSION,
             //RequestHeader::AUTHORIZATION => 'Bearer ' . $this->accessToken
         );
@@ -327,6 +327,11 @@ class ODataRequest implements IODataRequest
             );
         }
         return $headers;
+    }
+
+    public function attachPaginationHeader()
+    {
+        $this->headers[RequestHeader::PREFER] = Constants::ODATA_MAX_PAGE_SIZE . '=' . Constants::ODATA_MAX_PAGE_SIZE_DEFAULT;
     }
 
     /**

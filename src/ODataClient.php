@@ -266,6 +266,10 @@ class ODataClient implements IODataClient
     {
         $request = new ODataRequest($method, $this->baseUrl . $requestUri, $this, $this->entityReturnType);
 
+        if (strpos($requestUri, '(') === false) {
+            $request->attachPaginationHeader();
+        }
+
         if ($body) {
             $request->attachBody($body);
         }
