@@ -311,7 +311,7 @@ class Grammar implements IGrammar
      *
      * @return string
      */
-    protected function whereBasic(Builder $query, $where)
+    public function whereBasic(Builder $query, $where)
     {
         $value = $this->prepareValue($where['value']);
         return $where['column'] . ' ' . $this->getOperatorMapping($where['operator']) . ' ' . $value;
@@ -324,7 +324,7 @@ class Grammar implements IGrammar
      * @param  array  $where
      * @return string
      */
-    protected function whereFunction(Builder $query, $where)
+    public function whereFunction(Builder $query, $where)
     {
         $value = $this->prepareValue($where['value']);
         return $where['operator'] . '(' . $where['column'] . ',' . $value . ')';
