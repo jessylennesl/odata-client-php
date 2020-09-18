@@ -163,7 +163,8 @@ class ODataResponse
             $nextLink = $body[Constants::ODATA_NEXT_LINK];
             $explodedLinks = explode("?", $nextLink);
             $url = $explodedLinks[1];
-            $url = explode("skiptoken=", $url);
+            $url = explode("skip=", $url);
+            // $url = explode("skiptoken=", $url);
             if (count($url) > 1) {
                 return $url[1];
             }
