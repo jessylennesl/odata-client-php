@@ -213,9 +213,7 @@ class ODataRequest implements IODataRequest
 
         $this->authenticateRequest($request);
 
-        $req = $this->client->getHttpProvider()->send($request);
-
-        $result = $req->getResponse();
+        $result = $this->client->getHttpProvider()->send($request);
 
         //Send back the bare response
         if ($this->returnsStream) {
